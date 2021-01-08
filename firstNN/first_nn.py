@@ -45,10 +45,16 @@ class Net(nn.Module):
 
         # Kernel: 5 x 5, Stride: (1, 1), output 6 layers, padding = 0 px
         # So Output size = 28 x 28 x 6 = 4704
+        ### Inputs to Conv2d: Incoming layers, outgoing layers, Frame size
+        # Other values are all keyword arguments
+        # Ex. to use stride = 2 and padding = 1 we would do:
+        # nn.Conv2d(3, 6, 5, stride = 2, padding = 1)
         self.conv1 = nn.Conv2d(3, 6, 5)
 
         # Kernel: 2 x 2, Stride: (2, 2)
         # So Output size = 14 x 14 x 6 = 1176
+        ### Inputs to MaxPool2d: Frame/Kernal, stride
+        # Notice that layers of a Pool are same are previous Conv.
         self.pool2 = nn.MaxPool2d(2, 2)
 
         # For trying out 3 x 3 kernel, Stride: (3, 3)
