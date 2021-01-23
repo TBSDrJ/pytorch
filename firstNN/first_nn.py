@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 
-fout = open('test.txt', 'w')
+fout = open('testDataAug.txt', 'w')
 
 # File location to save to or load from
 MODEL_SAVE_PATH = './cifar_net.pth'
@@ -123,8 +123,55 @@ print("[INFO] Loading Traning and Test Datasets.", file=fout)
 #         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 #     ])
 transform = transforms.ToTensor()
-trainset = torchvision.datasets.CIFAR10(root = './data', train = True,
+trainset0 = torchvision.datasets.CIFAR10(root = './data', train = True,
     download = True, transform = transform)
+
+transform1 = transforms.Compose([
+    transforms.ToTensor(), transforms.ColorJitter()
+])
+dataAug1 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform1)
+
+transform2 = transforms.Compose([
+    transforms.ToTensor(), transforms.RandomAffine(90)
+])
+dataAug2 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform2)
+
+transform3 = transforms.Compose([
+    transforms.ToTensor(), transforms.RandomHorizontalFlip(p=1)
+])
+dataAug3 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform3)
+
+transform4 = transforms.Compose([
+    transforms.ToTensor(), transforms.RandomVerticalFlip(p=1)
+])
+dataAug4 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform4)
+
+transform5 = transforms.Compose([
+    transforms.ToTensor(), transforms.RandomPerspective()
+])
+dataAug5 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform5)
+
+transform6 = transforms.Compose([
+    transforms.ToTensor(), transforms.RandomRotation(90)
+])
+dataAug6 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform6)
+
+transform7 = transforms.Compose([
+    transforms.ToTensor(), transforms.RandomErasing()
+])
+dataAug7 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
+
+trainset = torch.utils.data.ConcatDataset([
+    trainset0, dataAug1, dataAug2, dataAug3, dataAug4, dataAug5, dataAug6, dataAug7,
+])
+
 trainloader = torch.utils.data.DataLoader(trainset,
     batch_size = BATCH_SIZE_TRAIN, shuffle = True)
 testset = torchvision.datasets.CIFAR10(root = './data', train = False,
