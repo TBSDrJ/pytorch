@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 
-fout = open('testDataAug.txt', 'w')
+fout = open('testRandomErasing.txt', 'w')
 
 # File location to save to or load from
 MODEL_SAVE_PATH = './cifar_net.pth'
@@ -126,45 +126,21 @@ transform = transforms.ToTensor()
 trainset0 = torchvision.datasets.CIFAR10(root = './data', train = True,
     download = True, transform = transform)
 
-transform1 = transforms.Compose([
-    transforms.ToTensor(), transforms.ColorJitter()
-])
-dataAug1 = torchvision.datasets.CIFAR10(root = './data', train = True,
-    download = True, transform = transform1)
-
-transform2 = transforms.Compose([
-    transforms.ToTensor(), transforms.RandomAffine(90)
-])
-dataAug2 = torchvision.datasets.CIFAR10(root = './data', train = True,
-    download = True, transform = transform2)
-
-transform3 = transforms.Compose([
-    transforms.ToTensor(), transforms.RandomHorizontalFlip(p=1)
-])
-dataAug3 = torchvision.datasets.CIFAR10(root = './data', train = True,
-    download = True, transform = transform3)
-
-transform4 = transforms.Compose([
-    transforms.ToTensor(), transforms.RandomVerticalFlip(p=1)
-])
-dataAug4 = torchvision.datasets.CIFAR10(root = './data', train = True,
-    download = True, transform = transform4)
-
-transform5 = transforms.Compose([
-    transforms.ToTensor(), transforms.RandomPerspective()
-])
-dataAug5 = torchvision.datasets.CIFAR10(root = './data', train = True,
-    download = True, transform = transform5)
-
-transform6 = transforms.Compose([
-    transforms.ToTensor(), transforms.RandomRotation(90)
-])
-dataAug6 = torchvision.datasets.CIFAR10(root = './data', train = True,
-    download = True, transform = transform6)
-
 transform7 = transforms.Compose([
     transforms.ToTensor(), transforms.RandomErasing()
 ])
+dataAug1 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
+dataAug2 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
+dataAug3 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
+dataAug4 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
+dataAug5 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
+dataAug6 = torchvision.datasets.CIFAR10(root = './data', train = True,
+    download = True, transform = transform7)
 dataAug7 = torchvision.datasets.CIFAR10(root = './data', train = True,
     download = True, transform = transform7)
 
@@ -191,7 +167,7 @@ classes = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 # imshow(torchvision.utils.make_grid(images))
 
 net = Net()
-# net.to(device)
+net.to(device)
 print("Network:", net)
 print("Network:", net, file=fout)
 
@@ -207,8 +183,8 @@ for epoch in range(TRAIN_EPOCHS):
     running_loss = 0.0
 
     for i, data in enumerate(trainloader, 0):
-        # inputs, labels = data[0].to(device), data[1].to(device)\
-        inputs, labels = data
+        inputs, labels = data[0].to(device), data[1].to(device)\
+        # inputs, labels = data
 
         optimizer.zero_grad()
 
@@ -232,8 +208,8 @@ for epoch in range(TRAIN_EPOCHS):
     total = 0
     with torch.no_grad():
         for data in trainloader:
-            # images, labels = data[0].to(device), data[1].to(device)
-            images, labels = data
+            images, labels = data[0].to(device), data[1].to(device)
+            # images, labels = data
             outputs = net(images)
             # For overall accuracy
             _, predicted = torch.max(outputs.data, 1)
@@ -245,8 +221,8 @@ for epoch in range(TRAIN_EPOCHS):
     total = 0
     with torch.no_grad():
         for data in testloader:
-            # images, labels = data[0].to(device), data[1].to(device)
-            images, labels = data
+            images, labels = data[0].to(device), data[1].to(device)
+            # images, labels = data
             outputs = net(images)
             # For overall accuracy
             _, predicted = torch.max(outputs.data, 1)
@@ -284,8 +260,8 @@ class_correct = list(0. for i in range(10))
 class_total = list(0. for i in range(10))
 with torch.no_grad():
     for data in testloader:
-        # images, labels = data[0].to(device), data[1].to(device)
-        images, labels = data
+        images, labels = data[0].to(device), data[1].to(device)
+        # images, labels = data
         outputs = net(images)
         # For overall accuracy
         _, predicted = torch.max(outputs.data, 1)
