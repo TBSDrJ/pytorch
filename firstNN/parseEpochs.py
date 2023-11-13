@@ -1,8 +1,9 @@
 from statistics import mean
 import matplotlib.pyplot as plt
+import numpy as np
 import argparse
 
-ROLL_LEN = 5
+ROLL_LEN = 1
 
 ap = argparse.ArgumentParser()
 ap.add_argument('-f', '--file', required=True,
@@ -51,7 +52,7 @@ for i in range(epochs):
 losses = losses[epochs:]
 train = train[epochs:]
 validation = validation[epochs:]
-plt.plot(x, [loss for loss in losses])
-plt.plot(x, [t for t in train])
-plt.plot(x, [v for v in validation])
+plt.plot(np.arange(0, len(losses)), losses)
+plt.plot(np.arange(0, len(train)), train)
+plt.plot(np.arange(0, len(validation)), validation)
 plt.show()
